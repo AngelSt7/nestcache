@@ -55,7 +55,6 @@ export async function main() {
       injectRedisIntoDocker(dockerUsedPath, port);
     }
 
-    // ✅ MENSAJES FINALES POST-CREACIÓN
     console.log("\n✅ Redis configurado correctamente.\n");
     console.log("📌 Ahora debes ejecutar el siguiente comando desde la carpeta donde está tu docker-compose:\n");
     console.log("   👉 docker compose up -d\n");
@@ -69,7 +68,6 @@ export async function main() {
     console.log("Modo manual seleccionado, configure redis manualmente");
   }
 
-  // ---- FUTURO ----
   const basePath = "src";
   const moduleName = "cache";
 

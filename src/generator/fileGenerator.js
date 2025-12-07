@@ -3,7 +3,6 @@ import fs from "fs";
 import { createFolderStructure } from "./folderGenerator.js";
 import { headline, success } from "../helpers/index.js";
 import { cacheKeysTemplate, ttlsTemplate, indexConfigTemplate, cachedDecoratorTemplate, indexDecoratorTemplate, indexInterceptorTemplate, queryAwareCacheInterceptorTemplate, indexServicesTemplate, cacheUtilsServiceTemplate, redisServiceTemplate, cacheModuleTemplate, indexCacheModuleTemplate } from "../templates/index.js";
-import { toolsTemplate } from "../templates/ToolsTemplate.js";
 
 //**CONFIG */
 function createIndexConfig() {

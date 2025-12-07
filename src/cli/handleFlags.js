@@ -3,12 +3,20 @@ import { initRedis, listKeys, getKey, deleteKey, flushAll } from "../tools/tools
 export async function handleFlags() {
   const args = process.argv.slice(2);
 
+  const validFlags = ["--list", "--get", "--del", "--flush"];
+  const hasValidFlag = args.some(arg => validFlags.includes(arg));
+
+  if (!hasValidFlag) {
+    return false;
+  }
+
   const portArgIndex = args.findIndex(a => a === "--port");
   const port = portArgIndex !== -1
     ? Number(args[portArgIndex + 1])
     : 12000;
 
-  initRedis(port);
+
+  await initRedis(port);
 
   if (args.includes("--list")) {
     await listKeys();
