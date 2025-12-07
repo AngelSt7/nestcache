@@ -1,0 +1,10 @@
+services:
+  redis:
+    container_name: redis
+    image: redis:8
+    restart: always
+    ports:
+      - 12000:6379
+    volumes:
+      - ${PWD}/redis:/data
+

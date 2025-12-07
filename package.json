@@ -1,0 +1,32 @@
+{
+  "name": "@angexxl/nestcache",
+  "version": "1.0.0",
+  "description": "CLI para integrar Redis Cache automáticamente en proyectos NestJS",
+  "bin": {
+    "nestcache": "./index.js"
+  },
+  "type": "module",
+  "files": [
+    "index.js",
+    "src/**/*"
+  ],
+  "keywords": [
+    "nestjs",
+    "redis",
+    "cache",
+    "cli",
+    "generator",
+    "docker",
+    "ioredis"
+  ],
+  "author": "Angel",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AngelSt7/nestcache.git"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^8.0.1",
+    "ioredis": "^5.8.2"
+  }
+}
