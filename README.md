@@ -1,5 +1,5 @@
 # @angexxl/hexamod
 
-ESTA EN FASE DE PRUEBA QLEROS, NO DESCAGAR AUN XDDDDDDD
+No descargar aun, falta test
 
 
