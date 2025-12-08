@@ -1,4 +1,4 @@
-# Welcome to @angexxl/nestcache! En English🚀
+# Welcome to @angexxl/nestcache! In English🚀
 
 This is my second npm package, and it comes to drastically improve what was my first attempt at creating a useful CLI for developers.
 
@@ -9,6 +9,15 @@ But as usually happens in development…
 > "Nothing is difficult until someone finally simplifies it."
 
 But let's stop the chatter and get to the ***important*** stuff.
+
+---
+
+## 📦 Installation
+
+To install this package, simply run:
+```bash
+npx @angexxl/nestcache
+```
 
 ---
 
@@ -343,6 +352,14 @@ Pero como suele pasar en desarrollo…
 > "Nada es difícil hasta que alguien finalmente lo simplifica."
 
 Pero dejémonos de habladurías y vamos a lo ***importante***.
+
+---
+## 📦 Instalación
+Para instalar este paquete, simplemente ejecuta:
+```bash
+npx @angexxl/nestcache
+```
+---
 
 ---
 
