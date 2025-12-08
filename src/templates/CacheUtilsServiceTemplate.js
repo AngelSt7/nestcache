@@ -26,18 +26,6 @@ export class CacheUtilsService {
         return key;
     }
 
-    async deleteKeys(bases: string | string[]) {
-        const basesArray = Array.isArray(bases) ? bases : [bases];
-
-        for (const base of basesArray) {
-            const pattern = \`cache::\${base}*\`;
-            const keys = await this.redisService.keys(pattern);
-
-            if (keys.length > 0) {
-                await this.redisService.del(...keys);
-            }
-        }
-    }
 }
 `.trim();
 }

@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import { createFolderStructure } from "./folderGenerator.js";
 import { headline, success } from "../helpers/index.js";
-import { cacheKeysTemplate, ttlsTemplate, indexConfigTemplate, cachedDecoratorTemplate, indexDecoratorTemplate, indexInterceptorTemplate, queryAwareCacheInterceptorTemplate, indexServicesTemplate, cacheUtilsServiceTemplate, redisServiceTemplate, cacheModuleTemplate, indexCacheModuleTemplate } from "../templates/index.js";
+import { cacheKeysTemplate, ttlsTemplate, indexConfigTemplate, cachedDecoratorTemplate, indexDecoratorTemplate, indexInterceptorTemplate, queryAwareCacheInterceptorTemplate, indexServicesTemplate, cacheUtilsServiceTemplate, redisServiceTemplate, cacheModuleTemplate, indexCacheModuleTemplate, cacheRedisCacheServiceTemplate } from "../templates/index.js";
 
 //**CONFIG */
 function createIndexConfig() {
@@ -68,6 +68,12 @@ function createRedisService(port){
   success(`Archivo creado: src/cache/services/redis.service.ts`);
 }
 
+function createRedisCacheService(){
+  const filePath = path.join("src", "cache", "services", "redis-cache.service.ts");
+  fs.writeFileSync(filePath,   cacheRedisCacheServiceTemplate(), { encoding: "utf-8" });
+  success(`Archivo creado: src/cache/services/redis-cache.service.ts`);
+}
+
 //** Module */
 function createIndexModule(){
   const filePath = path.join("src", "cache", "module", "index.ts");
@@ -97,6 +103,7 @@ export async function generateModule(basePath, moduleName, port) {
   createRedisService(port);
   createIndexModule();
   createCacheModule();
+  createRedisCacheService();
 
   headline(`
 ------------------------------------------------------

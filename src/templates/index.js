@@ -1,3 +1,4 @@
+export { cacheRedisCacheServiceTemplate } from "./CacheRedisCacheServiceTemplate.js";
 export { dockerRedisServiceTemplate } from "./DockerRedisServiceTemplate.js";
 
 export { indexCacheModuleTemplate } from "./IndexCacheModuleTemplate.js";
