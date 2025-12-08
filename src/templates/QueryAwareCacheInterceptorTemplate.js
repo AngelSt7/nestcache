@@ -32,6 +32,10 @@ export class QueryAwareCacheInterceptor implements NestInterceptor {
 
     const cached = await this.redisService.get(finalKey);
 
+    if (cached) {
+        return of(JSON.parse(cached));
+    }
+
     return next.handle().pipe(
       tap(async (data) => {
         await this.redisService.set(finalKey, JSON.stringify(data), 'EX', ttl);

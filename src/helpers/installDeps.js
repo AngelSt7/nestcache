@@ -1,8 +1,21 @@
 import { execSync } from "child_process";
 import fs from "fs";
+import { logError, logInfo, logSuccess } from "../cli/logger.js";
 
 export function installIORedis() {
   try {
+    const pkgJsonPath = "./package.json";
+    if (fs.existsSync(pkgJsonPath)) {
+      const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, "utf8"));
+      const deps = pkg.dependencies || {};
+      const devDeps = pkg.devDependencies || {};
+
+      if (deps["ioredis"] || devDeps["ioredis"]) {
+        logInfo("ioredis is already installed. Skipping installation.");
+        return;
+      }
+    }
+
     let command = "npm install ioredis";
 
     if (fs.existsSync("pnpm-lock.yaml")) {
@@ -11,12 +24,12 @@ export function installIORedis() {
       command = "yarn add ioredis";
     }
 
-    console.log(`\n📦 Instalando dependencia con: ${command}\n`);
+    logInfo(`Installing dependency with: ${command}`);
     execSync(command, { stdio: "inherit" });
 
-    console.log("\n✅ ioredis instalado correctamente\n");
+    logSuccess("ioredis installed successfully");
   } catch (error) {
-    console.error("\n❌ Error instalando ioredis\n");
+    logError(`Error installing ioredis: ${error.message}`);
     process.exit(1);
   }
 }

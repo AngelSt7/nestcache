@@ -7,10 +7,6 @@ import { RedisService } from './redis.service';
 @Injectable()
 export class CacheUtilsService {
 
-    constructor(
-        private readonly redisService: RedisService
-    ) { }
-
     generateCacheKey(base: CACHE_KEYS, query: Record<string, any>, resourceId?: string) {
         const sortedEntries = Object.entries(query)
             .filter(([_, v]) => v !== undefined && v !== null)

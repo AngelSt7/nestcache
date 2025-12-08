@@ -1,8 +1,9 @@
 import { generateModule } from "../generator/fileGenerator.js";
+import { ensureGitignoreHasRedis } from "../helpers/ensureGitignoreHasRedis.js";
 import { createDefaultDockerCompose, detectAllYamlFiles, injectRedisIntoDocker } from "../helpers/index.js";
-import { headline } from "../helpers/index.js";
 import { installIORedis } from "../helpers/installDeps.js";
 import { handleFlags } from "./handleFlags.js";
+import { logInfo, logWarning, logSuccess, logStep, logTitle } from "./logger.js";
 import { askCacheMode, selectDockerCompose, askForRedisPort } from "./prompts.js";
 import path from "path";
 
@@ -10,9 +11,9 @@ export async function main() {
   const usedFlags = await handleFlags();
   if (usedFlags !== false) return;
 
-  headline(`
+  logTitle(`
 ======================================
-   CREATE CACHE REDIS
+       CREATE REDIS CACHE
 ======================================
 `);
 
@@ -20,27 +21,23 @@ export async function main() {
   let portFolder = 12000;
 
   if (mode === "AUTO") {
-
     const port = await askForRedisPort(12000);
     portFolder = port;
 
     const yamls = detectAllYamlFiles();
-
     let dockerUsedPath = null;
 
     if (yamls.length === 0) {
-      console.log("No se encontraron archivos docker-compose.");
-      console.log("Se creará automáticamente: docker-compose.dev.yml");
+      logWarning("No .yml files were found.");
+      logInfo("A new file will be created automatically: docker-compose.dev.yml");
 
       dockerUsedPath = createDefaultDockerCompose(port);
 
     } else if (yamls.length === 1) {
-      console.log(
-        `Archivo Docker detectado automáticamente: ${path.basename(yamls[0])}`
-      );
+      logInfo(`Docker file detected automatically: ${path.basename(yamls[0])}`);
 
       dockerUsedPath = yamls[0];
-      console.log("Usando:", dockerUsedPath);
+      logStep(`Using: ${dockerUsedPath}`);
 
       injectRedisIntoDocker(dockerUsedPath, port);
 
@@ -48,29 +45,36 @@ export async function main() {
       const selectedDocker = await selectDockerCompose(yamls);
 
       dockerUsedPath = selectedDocker;
-      console.log(
-        `Docker seleccionado: ${path.basename(dockerUsedPath)}`
-      );
+      logInfo(`Selected Docker file: ${path.basename(dockerUsedPath)}`);
 
       injectRedisIntoDocker(dockerUsedPath, port);
     }
 
-    console.log("\n✅ Redis configurado correctamente.\n");
-    console.log("📌 Ahora debes ejecutar el siguiente comando desde la carpeta donde está tu docker-compose:\n");
-    console.log("   👉 docker compose up -d\n");
-    console.log("⚠️ Asegúrate de tener Docker instalado y en ejecución.");
-    console.log("\n🔧 Si tienes problemas con el puerto:");
-    console.log("   - Puedes cambiarlo en tu archivo docker-compose (servicio redis)");
-    console.log("   - Y también en el archivo de servicio Redis generado (redisService)");
-    console.log(`   - Puerto actual configurado: ${port}\n`);
+    logSuccess("Redis configured successfully.");
+
+    logInfo("Now run the following command from the folder where your docker-compose file is located:");
+    logStep("docker compose up -d");
+
+    logWarning("Make sure Docker is installed and running.");
+
+    logInfo("If you have port issues:");
+    logStep("You can change it in your docker-compose file (redis service)");
+    logStep("And also in the generated Redis service file (redisService)");
+    logInfo(`Current configured port: ${port}`);
 
   } else {
-    console.log("Modo manual seleccionado, configure redis manualmente");
+    logInfo("Manual mode selected, please configure Redis manually.");
   }
 
   const basePath = "src";
   const moduleName = "cache";
 
+  logStep("Installing ioredis dependency...");
   installIORedis();
+
+  logStep("Generating cache module...");
   await generateModule(basePath, moduleName, portFolder);
+  ensureGitignoreHasRedis();
+
+  logSuccess("Cache module generated successfully.");
 }

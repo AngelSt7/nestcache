@@ -1,90 +1,91 @@
 import path from "path";
 import fs from "fs";
 import { createFolderStructure } from "./folderGenerator.js";
-import { headline, success } from "../helpers/index.js";
 import { cacheKeysTemplate, ttlsTemplate, indexConfigTemplate, cachedDecoratorTemplate, indexDecoratorTemplate, indexInterceptorTemplate, queryAwareCacheInterceptorTemplate, indexServicesTemplate, cacheUtilsServiceTemplate, redisServiceTemplate, cacheModuleTemplate, indexCacheModuleTemplate, cacheRedisCacheServiceTemplate } from "../templates/index.js";
+import { logInfo, logSuccess } from "../cli/logger.js";
+
 
 //**CONFIG */
 function createIndexConfig() {
   const filePath = path.join("src", "cache", "config", "index.ts");
   fs.writeFileSync(filePath, indexConfigTemplate(), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/config/index.ts`);
+  logSuccess(`File created: src/cache/config/index.ts`);
 }
 
 function createCacheKeys() {
   const filePath = path.join("src", "cache", "config", "cache-keys.ts");
   fs.writeFileSync(filePath, cacheKeysTemplate(), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/config/cache-keys.ts`);
+  logSuccess(`File created: src/cache/config/cache-keys.ts`);
 }
 
 function createTtls() {
   const filePath = path.join("src", "cache", "config", "ttls.ts");
   fs.writeFileSync(filePath, ttlsTemplate(), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/config/ttls.ts`);
+  logSuccess(`File created: src/cache/config/ttls.ts`);
 }
 
 //**Decorator */
 function createIndexDecorator() {
   const filePath = path.join("src", "cache", "decorators", "index.ts");
   fs.writeFileSync(filePath, indexDecoratorTemplate(), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/decorators/index.ts`);
+  logSuccess(`File created: src/cache/decorators/index.ts`);
 }
 
-function createDecorator(){
+function createDecorator() {
   const filePath = path.join("src", "cache", "decorators", "cached.decorator.ts");
   fs.writeFileSync(filePath, cachedDecoratorTemplate(), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/decorators/cached.decorator.ts`);
+  logSuccess(`File created: src/cache/decorators/cached.decorator.ts`);
 }
 
 //**Interceptors */
 function createIndexInterceptor() {
   const filePath = path.join("src", "cache", "interceptors", "index.ts");
   fs.writeFileSync(filePath, indexInterceptorTemplate(), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/interceptors/index.ts`);
+  logSuccess(`File created: src/cache/interceptors/index.ts`);
 }
 
-function createInterceptor(){
+function createInterceptor() {
   const filePath = path.join("src", "cache", "interceptors", "query-aware-cache.interceptor.ts");
   fs.writeFileSync(filePath, queryAwareCacheInterceptorTemplate(), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/interceptors/query-aware-cache.interceptor.ts`);
+  logSuccess(`File created: src/cache/interceptors/query-aware-cache.interceptor.ts`);
 }
 
 //**Services */
-function createIndexService(){
+function createIndexService() {
   const filePath = path.join("src", "cache", "services", "index.ts");
   fs.writeFileSync(filePath, indexServicesTemplate(), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/services/index.ts`);
+  logSuccess(`File created: src/cache/services/index.ts`);
 }
 
-function createCacheUtilsService(){
+function createCacheUtilsService() {
   const filePath = path.join("src", "cache", "services", "cache-utils.service.ts");
   fs.writeFileSync(filePath, cacheUtilsServiceTemplate(), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/services/cache-utils.service.ts`);
+  logSuccess(`File created: src/cache/services/cache-utils.service.ts`);
 }
 
-function createRedisService(port){
+function createRedisService(port) {
   const filePath = path.join("src", "cache", "services", "redis.service.ts");
   fs.writeFileSync(filePath, redisServiceTemplate(port), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/services/redis.service.ts`);
+  logSuccess(`File created: src/cache/services/redis.service.ts`);
 }
 
-function createRedisCacheService(){
+function createRedisCacheService() {
   const filePath = path.join("src", "cache", "services", "redis-cache.service.ts");
-  fs.writeFileSync(filePath,   cacheRedisCacheServiceTemplate(), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/services/redis-cache.service.ts`);
+  fs.writeFileSync(filePath, cacheRedisCacheServiceTemplate(), { encoding: "utf-8" });
+  logSuccess(`File created: src/cache/services/redis-cache.service.ts`);
 }
 
 //** Module */
-function createIndexModule(){
+function createIndexModule() {
   const filePath = path.join("src", "cache", "module", "index.ts");
   fs.writeFileSync(filePath, indexCacheModuleTemplate(), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/module/index.ts`);
+  logSuccess(`File created: src/cache/module/index.ts`);
 }
 
-function createCacheModule(){
+function createCacheModule() {
   const filePath = path.join("src", "cache", "module", "cache.module.ts");
   fs.writeFileSync(filePath, cacheModuleTemplate(), { encoding: "utf-8" });
-  success(`Archivo creado: src/cache/module/cache.module.ts`);
+  logSuccess(`File created: src/cache/module/cache.module.ts`);
 }
 
 export async function generateModule(basePath, moduleName, port) {
@@ -105,7 +106,7 @@ export async function generateModule(basePath, moduleName, port) {
   createCacheModule();
   createRedisCacheService();
 
-  headline(`
+  logInfo(`
 ------------------------------------------------------
       CACHE MODULE SUCCESSFULLY IMPLEMENTED
 ------------------------------------------------------

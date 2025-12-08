@@ -1,16 +1,23 @@
 import fs from "fs";
 import { dockerRedisServiceTemplate } from "../templates/index.js";
+import { logError, logSuccess, logWarning } from "../cli/logger.js";
 
 export function injectRedisIntoDocker(filePath, port) {
-  const content = fs.readFileSync(filePath, "utf8");
+  try {
+    const content = fs.readFileSync(filePath, "utf8");
 
-  if (content.includes("redis:")) {
-    console.log("⚠️ Redis ya existe en este docker-compose. No se agregó nada.");
-    return;
+    if (content.includes("redis:")) {
+      logWarning("Redis already exists in this docker-compose file. Nothing was added.");
+      return;
+    }
+
+    const updated =
+      content.trimEnd() + "\n\n" + dockerRedisServiceTemplate(port) + "\n";
+
+    fs.writeFileSync(filePath, updated);
+
+    logSuccess("Redis service added successfully");
+  } catch (err) {
+    logError(`Failed to inject Redis into file: ${err.message}`);
   }
-
-  const updated = content.trimEnd() + "\n\n" + dockerRedisServiceTemplate(port) + "\n";
-
-  fs.writeFileSync(filePath, updated);
-  console.log("✅ Servicio Redis agregado correctamente");
 }

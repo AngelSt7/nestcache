@@ -2,10 +2,14 @@ import path from "path";
 import fs from "fs";
 import { MODULE_FOLDERS } from "../constants/folders.js";
 import { colors } from "../constants/colors.js";
-import { success, step, sleep } from "../helpers/index.js";
+import { sleep } from "../helpers/index.js";
+import { 
+  logSuccess, 
+  logStep 
+} from "../cli/logger.js";
 
 export async function createFolderStructure(moduleRoot) {
-  step("Creando estructura de carpetas...");
+  logStep("Creating folder structure...");
 
   for (const folder of MODULE_FOLDERS) {
     const fullPath = path.join(moduleRoot, folder);
@@ -16,7 +20,7 @@ export async function createFolderStructure(moduleRoot) {
     process.stdout.clearLine?.();
     process.stdout.cursorTo?.(0);
 
-    success(`Carpeta creada: src/cache/${folder}`);
+    logSuccess(`Folder created: src/cache/${folder}`);
     await sleep(20);
   }
 }

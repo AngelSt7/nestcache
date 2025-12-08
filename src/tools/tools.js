@@ -1,4 +1,11 @@
 import Redis from "ioredis";
+import {
+  logSuccess,
+  logWarning,
+  logError,
+  logInfo,
+  log
+} from "../cli/logger.js";
 
 let redis = null;
 
@@ -8,17 +15,17 @@ export async function initRedis(port = 12000) {
   redis = new Redis({
     host: "127.0.0.1",
     port,
-    lazyConnect: true 
+    lazyConnect: true
   });
 
   try {
     await redis.connect();
-    console.log(`✅ Conectado a Redis en 127.0.0.1:${port}`);
+    logSuccess(`Connected to Redis at 127.0.0.1:${port}`);
   } catch (err) {
-    console.log(`❌ No se pudo conectar a Redis en 127.0.0.1:${port}`);
-    console.log("   ➜ Asegúrate de haber ejecutado:");
-    console.log("   ➜ docker compose up -d");
-    console.log("   ➜ O que Redis esté activo manualmente");
+    logError(`Failed to connect to Redis at 127.0.0.1:${port}`);
+    logInfo("Make sure you have already run:");
+    log("  -> docker compose up -d");
+    log("  -> Or that Redis is running manually");
     process.exit(1);
   }
 
@@ -29,10 +36,10 @@ export async function listKeys() {
   const keys = await redis.keys("*");
 
   if (!keys.length) {
-    console.log("⚠️ No hay keys en Redis");
+    logWarning("No keys found in Redis");
   } else {
-    console.log("✅ Keys en Redis:");
-    keys.forEach(k => console.log(" -", k));
+    logSuccess("Keys in Redis:");
+    keys.forEach(k => log(` - ${k}`));
   }
 
   process.exit(0);
@@ -41,8 +48,17 @@ export async function listKeys() {
 export async function getKey(key) {
   const value = await redis.get(key);
 
-  if (!value) console.log("⚠️ Key no encontrada");
-  else console.log(`✅ ${key}:`, value);
+  if (!value) {
+    logWarning("Key not found");
+  } else {
+    try {
+      const parsed = JSON.parse(value);
+      logSuccess(`${key}:`);
+      log(JSON.stringify(parsed, null, 2));
+    } catch (err) {
+      logSuccess(`${key}: ${value}`);
+    }
+  }
 
   process.exit(0);
 }
@@ -50,15 +66,17 @@ export async function getKey(key) {
 export async function deleteKey(key) {
   const result = await redis.del(key);
 
-  if (result === 0) console.log("⚠️ Key no encontrada");
-  else console.log("✅ Key eliminada correctamente");
+  if (result === 0) {
+    logWarning("Key not found");
+  } else {
+    logSuccess("Key deleted successfully");
+  }
 
   process.exit(0);
 }
 
 export async function flushAll() {
   await redis.flushall();
-  console.log("🔥 Todas las keys eliminadas");
-
+  logWarning("All keys have been deleted");
   process.exit(0);
 }

@@ -1,15 +1,21 @@
 import fs from "fs";
 import path from "path";
 import { dockerRedisServiceTemplate } from "../templates/index.js";
+import { logError, logSuccess } from "../cli/logger.js";
 
 export function createDefaultDockerCompose() {
-  const filePath = path.join(process.cwd(), "docker-compose.dev.yml");
+  try {
+    const filePath = path.join(process.cwd(), "docker-compose.dev.yml");
 
-  const content = `
+    const content = `
 services:
 ${dockerRedisServiceTemplate()}
 `.trimStart() + "\n";
 
-  fs.writeFileSync(filePath, content);
-  console.log("✅ docker-compose.dev.yml creado con Redis");
+    fs.writeFileSync(filePath, content);
+
+    logSuccess("docker-compose.dev.yml created with Redis");
+  } catch (err) {
+    logError(`Failed to create docker-compose.dev.yml: ${err.message}`);
+  }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@angexxl/nestcache",
-  "version": "1.0.2",
+  "version": "1.0.7",
   "description": "CLI para integrar Redis Cache automáticamente en proyectos NestJS",
   "bin": {
     "nestcache": "./index.js"
